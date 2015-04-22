@@ -1,29 +1,36 @@
 package com.adeady.digibattles
 
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.hateoas.EntityLinks
+import org.springframework.hateoas.ExposesResourceFor
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*
 
 @Controller
+@ExposesResourceFor(HelloWorld.class)
+@RequestMapping("/greeting")
 public class HelloWorldController {
 
-    private static final String TEMPLATE = "Hello, %s!";
+    @Autowired EntityLinks entityLinks;
 
-    @RequestMapping("/greeting")
-    @ResponseBody
-    public HttpEntity<Greeting> greeting(
-            @RequestParam(value = "name", required = false, defaultValue = "World") String name) {
+    @RequestMapping(value = "/{name}", method = RequestMethod.GET)
+    @ResponseBody HttpEntity<HelloWorld> greeting(
+            @PathVariable("name") String name) {
 
-        Greeting greeting = new Greeting(String.format(TEMPLATE, name));
-        greeting.add(linkTo(methodOn(HelloWorldController.class).greeting(name)).withSelfRel());
+        HelloWorld greeting = new HelloWorld("Hello, $name")
+        def link = entityLinks.linkToSingleResource(HelloWorld.class, name);
 
-        return new ResponseEntity<Greeting>(greeting, HttpStatus.OK);
+        greeting.add(link)
+
+        return new ResponseEntity<HelloWorld>(greeting, HttpStatus.OK)
     }
 }

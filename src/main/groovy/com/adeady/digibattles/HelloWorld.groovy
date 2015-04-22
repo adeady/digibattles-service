@@ -4,12 +4,12 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.springframework.hateoas.ResourceSupport
 
-class Greeting extends ResourceSupport {
+class HelloWorld extends ResourceSupport {
 
     private final String content;
 
     @JsonCreator
-    public Greeting(@JsonProperty("content") String content) {
+    public HelloWorld(@JsonProperty("content") String content) {
         this.content = content;
     }
 
