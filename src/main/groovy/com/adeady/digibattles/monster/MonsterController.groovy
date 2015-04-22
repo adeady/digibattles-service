@@ -28,14 +28,17 @@ public class MonsterController {
         return new ResponseEntity(items, HttpStatus.OK)
     }
 
-    void addLinks(monster) {
-        def link = entityLinks.linkToSingleResource(MonsterDefinition, monster.monsterId)
-        monster.add(link)
+    void addLinks(MonsterDefinition monster) {
+        def selfLink = entityLinks.linkToSingleResource(MonsterDefinition, monster.monsterId)
+        def talentTreelink = entityLinks.linkForSingleResource(TalentTreeDefinition, monster.talentTree.treeId).withRel("talentTree")
+        monster.add(selfLink)
+        monster.add(talentTreelink)
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody HttpEntity create(@RequestBody MonsterDefinition monster) {
 
+        monster.talentTree = new TalentTreeDefinition(monster:monster)
         monster = monsterRepository.save(monster)
         addLinks(monster)
 
