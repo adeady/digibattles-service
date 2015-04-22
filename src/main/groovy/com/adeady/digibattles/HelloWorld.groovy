@@ -4,16 +4,20 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.springframework.hateoas.ResourceSupport
 
-class HelloWorld extends ResourceSupport {
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
 
-    private final String content;
+//todo: split up entity from resource
+@Entity
+public class HelloWorld extends ResourceSupport {
 
-    @JsonCreator
-    public HelloWorld(@JsonProperty("content") String content) {
-        this.content = content;
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    long dbId;
 
-    public String getContent() {
-        return content;
-    }
+    String firstName;
+    String lastName;
+    String content;
 }

@@ -24,10 +24,12 @@ dependencies {
     // We use the latest groovy 2.x version for building this library
     compile 'org.codehaus.groovy:groovy-all:2.3.7'
     compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile("com.fasterxml.jackson.core:jackson-databind")
     compile("org.springframework.hateoas:spring-hateoas")
     compile("org.springframework.plugin:spring-plugin-core:1.1.0.RELEASE")
     compile("com.jayway.jsonpath:json-path:0.9.1")
+    compile("com.h2database:h2")
 
     // We use the awesome Spock testing and specification framework
     testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
